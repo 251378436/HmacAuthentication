@@ -12,7 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthentication()
-    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler>("HMACSHA256", options => { });
+    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler>("HMACSHA256", options => { })
+    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler2>("HMACSHA2562", options => { });
 
 var app = builder.Build();
 

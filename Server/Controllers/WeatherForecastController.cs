@@ -6,7 +6,7 @@ using Shared;
 namespace Server.Controllers
 {
     [ApiController]
-    [HmacAuthorize]
+    [HmacAuthorize2]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
