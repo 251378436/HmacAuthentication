@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Auth;
 using Shared;
 
 namespace Server.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = "HMACSHA256")]
+    [HmacAuthorize]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
