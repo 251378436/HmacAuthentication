@@ -30,8 +30,10 @@ app.UseAuthentication();
 
 app.UseRequestBefore();
 app.UseAuthorization();
-app.UseRequestAfter();
+
 
 app.MapControllers();
+
+app.UseRequestAfter();
 
 app.Run();

@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Auth;
+using Server.Filters;
 using Shared;
 
 namespace Server.Controllers
 {
     [ApiController]
     [HmacAuthorize2]
+    [CustomAuthorizationFilter]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
