@@ -23,10 +23,10 @@ namespace Server.Auth
             Request.EnableBuffering();
             string bodyString;
             using (var reader = new StreamReader(
-        Request.Body,
-        encoding: Encoding.UTF8,
-        detectEncodingFromByteOrderMarks: false,
-        leaveOpen: true))
+                                    Request.Body,
+                                    encoding: Encoding.UTF8,
+                                    detectEncodingFromByteOrderMarks: false,
+                                    leaveOpen: true))
             {
                 bodyString = await reader.ReadToEndAsync();
                 Console.WriteLine("*****************");
@@ -36,31 +36,30 @@ namespace Server.Auth
             }
             await Task.Delay(1);
 
-            //var authString = Request.Headers.Authorization.ToString();
-            //var requestSchema = authString.Split(' ')[0];
-            //var requestKeyId = authString.Split(' ')[1]?.Split(';')[0];
-            //var requestSecrect = authString.Split(' ')[1]?.Split(';')[1];
+            var authString = Request.Headers.Authorization.ToString();
+            var schemas = authString.Split(' ');
+            if (schemas.Length != 2)
+                return AuthenticateResult.Fail("token is invalid");
 
-            //// Signature
-            //string signature;
-            //using (var hmac = new HMACSHA256(Convert.FromBase64String(keySecrect)))
-            //{
-            //    signature = Convert.ToBase64String(hmac.ComputeHash(Encoding.ASCII.GetBytes(bodyString)));
-            //}
+            var requestSchema = authString.Split(' ')[0];
 
-            //if (CryptographicOperations.FixedTimeEquals(hashBytes, requestHmacFromHeader) != true)
-            //{
-            //    // Fail the request, hash mismatch
-            //    return;
-            //}
+            var keyValue = authString.Split(' ')[1].Split(';');
 
-            //if (!Request.Headers.ContainsKey(Options.TokenHeaderName))
-            //    return Task.FromResult(AuthenticateResult.Fail($"Missing Header For Token: {Options.TokenHeaderName}"));
+            if (keyValue.Length < 2)
+                return AuthenticateResult.Fail("token is invalid");
 
-            //var token = Request.Headers[Options.TokenHeaderName];
+            var requestKeyId = keyValue[0];
+            var requestHmacValue = keyValue[1];
 
-            //if (string.IsNullOrEmpty(token) || !token.Equals(_dTDSettings.Value.AuthToken))
-            //    return Task.FromResult(AuthenticateResult.Fail($"{Options.TokenHeaderName} token is invalid"));
+            // Signature
+            string signature;
+            using (var hmac = new HMACSHA256(Convert.FromBase64String(keySecrect)))
+            {
+                signature = Convert.ToBase64String(hmac.ComputeHash(Encoding.ASCII.GetBytes(bodyString)));
+            }
+
+            if(!requestHmacValue.Equals(signature, StringComparison.OrdinalIgnoreCase))
+                return AuthenticateResult.Fail("token is invalid");
 
             var claims = Array.Empty<Claim>();
             var id = new ClaimsIdentity(claims, Scheme.Name);

@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 
 namespace Server.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = "HMACSHA256")]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -21,7 +22,7 @@ namespace Server.Controllers
         }
 
         [HttpPost(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Post([FromBody] WeatherForecast forecast)
+        public IEnumerable<WeatherForecast> Post([FromBody] Order order)
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
