@@ -7,7 +7,6 @@ using Shared;
 namespace Server.Controllers
 {
     [ApiController]
-    [HmacAuthorize2]
     [CustomAuthorizationFilter]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -25,6 +24,7 @@ namespace Server.Controllers
         }
 
         [HttpPost(Name = "GetWeatherForecast")]
+        [HmacAuthorize2]
         public IEnumerable<WeatherForecast> Post([FromBody] Order order)
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -34,6 +34,12 @@ namespace Server.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("name")]
+        public IActionResult GetName()
+        {
+            return Ok("I like it");
         }
     }
 }
