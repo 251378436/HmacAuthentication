@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Server.DependencyInjection;
 using Server.Filters;
 using Server.Models;
 
@@ -11,7 +12,7 @@ namespace Server.Controllers
     [CustomAuthorizationFilter]
     public class CarsController : ControllerBase
     {
-        public CarsController()
+        public CarsController(ITransit1 transit1, IScoped1 scoped1, ISingleton1 singleton1)
         {
 
         }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Server;
 using Server.Auth;
+using Server.DependencyInjection;
 using Server.Middlewares;
 using Server.ModlesBinders;
 using System.Text.Json;
@@ -62,6 +63,8 @@ builder.Services.AddAuthentication(o =>
           })
     .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler>(Constants.Auth.HmacSha256, options => { })
     .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler2>(Constants.Auth.HmacSha2562, options => { });
+
+builder.Services.AddCustomDependencyInjection();
 
 var app = builder.Build();
 
