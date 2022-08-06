@@ -36,8 +36,9 @@ namespace Server.Controllers
             .ToArray();
         }
 
-        [HttpGet("name")]
-        public IActionResult GetName()
+        [HttpGet("DefaultAuth")]
+        [Authorize(AuthenticationSchemes = Constants.Auth.HmacSha256)]
+        public IActionResult DefaultAuth()
         {
             return Ok("I like it");
         }

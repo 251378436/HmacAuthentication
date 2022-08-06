@@ -22,18 +22,16 @@ namespace Server.Auth
         {
             Request.EnableBuffering();
             string bodyString;
-            using (var reader = new StreamReader(
+            using var reader = new StreamReader(
                                     Request.Body,
                                     encoding: Encoding.UTF8,
                                     detectEncodingFromByteOrderMarks: false,
-                                    leaveOpen: true))
-            {
-                bodyString = await reader.ReadToEndAsync();
-                Console.WriteLine("*****************");
-                Console.WriteLine("CustomTokenAuthHandler:" + bodyString);
-                Console.WriteLine("*****************");
-                Request.Body.Position = 0;
-            }
+                                    leaveOpen: true);
+            bodyString = await reader.ReadToEndAsync();
+            Console.WriteLine("*****************");
+            Console.WriteLine("CustomTokenAuthHandler:" + bodyString);
+            Console.WriteLine("*****************");
+            Request.Body.Position = 0;
             await Task.Delay(1);
 
             var authString = Request.Headers.Authorization.ToString();

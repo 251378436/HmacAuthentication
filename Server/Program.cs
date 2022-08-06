@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Server;
 using Server.Auth;
 using Server.Middlewares;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +14,42 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication()
-    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler>("HMACSHA256", options => { })
-    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler2>("HMACSHA2562", options => { });
+builder.Services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = Constants.Auth.HmacSha256OrJwtBearer;
+                o.DefaultAuthenticateScheme = Constants.Auth.HmacSha256OrJwtBearer;
+                o.DefaultChallengeScheme = Constants.Auth.HmacSha256OrJwtBearer;
+            })
+          .AddPolicyScheme(Constants.Auth.HmacSha256OrJwtBearer, Constants.Auth.HmacSha256OrJwtBearer, options =>
+          {
+              options.ForwardDefaultSelector = context =>
+              {
+                  var headerScheme = context.Request.Headers.Authorization.ToString()?.ToLower().Split(' ')[0] ?? Constants.Auth.JwtBearer;
+                  return headerScheme;
+              };
+          })
+          .AddJwtBearer(Constants.Auth.JwtBearer, options =>
+          {
+              options.Authority = $"https://{builder.Configuration["Auth0Settings:Domain"]}/";
+              options.Audience = builder.Configuration["Auth0Settings:Audience"];
+
+              options.Events = new JwtBearerEvents
+              {
+                  OnChallenge = context =>
+                  {
+                      context.Response.OnStarting(async () =>
+                      {
+                          await context.Response.WriteAsync(
+                              JsonSerializer.Serialize("You are not authorized!")
+                          );
+                      });
+
+                      return Task.CompletedTask;
+                  }
+              };
+          })
+    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler>(Constants.Auth.HmacSha256, options => { })
+    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler2>(Constants.Auth.HmacSha2562, options => { });
 
 var app = builder.Build();
 
@@ -30,7 +66,6 @@ app.UseAuthentication();
 
 app.UseRequestBefore();
 app.UseAuthorization();
-
 
 app.MapControllers();
 
