@@ -37,7 +37,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("DefaultAuth")]
-        [Authorize(AuthenticationSchemes = Constants.Auth.HmacSha256)]
+        [Authorize]
         public IActionResult DefaultAuth()
         {
             return Ok("I like it");

@@ -29,7 +29,8 @@ namespace Server.Auth
                                     leaveOpen: true);
             bodyString = await reader.ReadToEndAsync();
             Console.WriteLine("*****************");
-            Console.WriteLine("CustomTokenAuthHandler:" + bodyString);
+            //Console.WriteLine("CustomTokenAuthHandler:" + bodyString);
+            Console.WriteLine("Step 2: hmac");
             Console.WriteLine("*****************");
             Request.Body.Position = 0;
             await Task.Delay(1);

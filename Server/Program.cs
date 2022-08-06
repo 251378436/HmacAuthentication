@@ -35,6 +35,14 @@ builder.Services.AddAuthentication(o =>
 
               options.Events = new JwtBearerEvents
               {
+                  OnTokenValidated = context =>
+                  {
+                      Console.WriteLine("*****************");
+                      Console.WriteLine("Step 2: JwtBearer");
+                      Console.WriteLine("*****************");
+                      return Task.CompletedTask;
+                  },
+
                   OnChallenge = context =>
                   {
                       context.Response.OnStarting(async () =>
@@ -62,9 +70,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRequestBefore();
 app.UseAuthentication();
 
-app.UseRequestBefore();
 app.UseAuthorization();
 
 app.MapControllers();

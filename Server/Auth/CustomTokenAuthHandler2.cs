@@ -30,7 +30,8 @@ namespace Server.Auth
             {
                 bodyString = await reader.ReadToEndAsync();
                 Console.WriteLine("*****************");
-                Console.WriteLine("CustomTokenAuthHandler:" + bodyString);
+                //Console.WriteLine("CustomTokenAuthHandler:" + bodyString);
+                Console.WriteLine("Step 2: hmac2");
                 Console.WriteLine("*****************");
                 Request.Body.Position = 0;
             }

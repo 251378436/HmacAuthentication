@@ -22,7 +22,8 @@ namespace Server.Middlewares
 
             string bodyString = await reader.ReadToEndAsync();
             Console.WriteLine("*****************");
-            Console.WriteLine("RequestBeforeMiddleware:" + bodyString);
+            //Console.WriteLine("RequestBeforeMiddleware:" + bodyString);
+            Console.WriteLine("Step 1: before middleware");
             Console.WriteLine("*****************");
             context.Request.Body.Position = 0;
 
