@@ -15,6 +15,6 @@ namespace Server.Models
         public DateTime MadeDate { get; set; }
     }
 
-    [ModelBinder(BinderType = typeof(CarBinder))]
+    //[ModelBinder(BinderType = typeof(CarBinder))]
     public class CustomBinderCar : Car { }
 }

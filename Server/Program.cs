@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Server;
 using Server.Auth;
 using Server.Middlewares;
+using Server.ModlesBinders;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new CarModelBinderProvider());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
