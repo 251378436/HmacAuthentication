@@ -18,7 +18,7 @@ namespace Server.Serialization
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Console.WriteLine("*****************");
-            Console.WriteLine("Step 4: date json converter");
+            Console.WriteLine("Step 4 - 2: date json converter");
             Console.WriteLine("*****************");
 
             // use regular express to allow the client only submit date

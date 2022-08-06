@@ -20,5 +20,12 @@ namespace Server.Controllers
         {
             return Ok(car);
         }
+
+        [HttpPost("CustomBinder")]
+        [Authorize]
+        public ActionResult<CustomBinderCar> PostCarByCustomBinder([FromBody] CustomBinderCar car)
+        {
+            return Ok(car);
+        }
     }
 }

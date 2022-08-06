@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Server.Serialization;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Server
 {
@@ -12,5 +15,11 @@ namespace Server
             public const string HmacSha256 = "hmac_sha256";
             public const string HmacSha2562 = "hmac_sha2562";
         }
+
+        public static JsonSerializerOptions DefaultJsonSerializerOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new JsonStringEnumMemberConverter(new UnderscoreCaseNamingPolicy()) }
+        };
     }
 }
