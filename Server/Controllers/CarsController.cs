@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Server.Filters;
 using Server.Models;
 
 namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [CustomAuthorizationFilter]
     public class CarsController : ControllerBase
     {
         public CarsController()
