@@ -11,6 +11,7 @@ namespace Server.Controllers
     [ApiController]
     [CustomAuthorizationFilter]
     [CustomResourceFilter]
+    [Custom2ActionFilter]
     [Custom1ActionFilter]
     [CustomExceptionFilter]
     [CustomResultFilter]
