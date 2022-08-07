@@ -29,6 +29,10 @@ namespace Server.Middlewares
 
             // Call the next delegate/middleware in the pipeline.
             await _next(context);
+
+            Console.WriteLine("*****************");
+            Console.WriteLine("Step 7 - 1: after middleware executed");
+            Console.WriteLine("*****************");
         }
     }
 }

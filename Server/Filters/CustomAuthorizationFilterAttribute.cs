@@ -7,7 +7,7 @@ namespace Server.Filters
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             Console.WriteLine("*****************");
-            Console.WriteLine("CustomAuthorizationFilterAttribute:");
+            Console.WriteLine("Step 4 - 1: Authorization Filter");
             Console.WriteLine("*****************");
         }
     }

@@ -10,6 +10,10 @@ namespace Server.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [CustomAuthorizationFilter]
+    [CustomResourceFilter]
+    [Custom1ActionFilter]
+    [CustomExceptionFilter]
+    [CustomResultFilter]
     public class CarsController : ControllerBase
     {
         public CarsController(ITransit1 transit1, IScoped1 scoped1, ISingleton1 singleton1)
@@ -29,6 +33,26 @@ namespace Server.Controllers
         public ActionResult<CustomBinderCar> PostCarByCustomBinder([FromBody] CustomBinderCar car)
         {
             return Ok(car);
+        }
+
+        [HttpPost("GetResult")]
+        [Authorize]
+        public ActionResult<string> GetResult()
+        {
+            Console.WriteLine("*****************");
+            Console.WriteLine("Step 5: Executing in action");
+            Console.WriteLine("*****************");
+            return Ok("get car result");
+        }
+
+        [HttpPost("GetExceptionResult")]
+        [Authorize]
+        public ActionResult<string> GetExceptionResult()
+        {
+            Console.WriteLine("*****************");
+            Console.WriteLine("Step 5: Executing in action");
+            Console.WriteLine("*****************");
+            throw new Exception("internal error");
         }
     }
 }

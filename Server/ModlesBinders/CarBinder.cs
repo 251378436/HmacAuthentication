@@ -11,7 +11,7 @@ namespace Server.ModlesBinders
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             Console.WriteLine("*****************");
-            Console.WriteLine("Step 4 - 1: custom model binding");
+            Console.WriteLine("Step 4 - 3: custom model binding");
             Console.WriteLine("*****************");
 
             var result = await JsonSerializer.DeserializeAsync<CustomBinderCar>(bindingContext.HttpContext.Request.Body, Constants.DefaultJsonSerializerOptions);
