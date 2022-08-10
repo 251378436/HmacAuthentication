@@ -5,12 +5,13 @@ using Server.Auth;
 using Server.DependencyInjection;
 using Server.Middlewares;
 using Server.ModlesBinders;
+using System.Reflection;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers(options =>
 {
     options.ModelBinderProviders.Insert(0, new CarModelBinderProvider());
@@ -62,7 +63,8 @@ builder.Services.AddAuthentication(o =>
               };
           })
     .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler>(Constants.Auth.HmacSha256, options => { })
-    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler2>(Constants.Auth.HmacSha2562, options => { });
+    .AddScheme<AuthenticationSchemeOptions, CustomTokenAuthHandler2>(Constants.Auth.HmacSha2562, options => { })
+    .AddScheme<AuthenticationSchemeOptions, DefaultAuthHandler>("", options => { });
 
 builder.Services.AddCustomDependencyInjection();
 
