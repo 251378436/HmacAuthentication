@@ -8,9 +8,11 @@ namespace Server.Automapper
     {
         public MapperRequestProfile()
         {
-            CreateMap<MapperRequest, Car>();
+            CreateMap<MapperRequest, EMLAddress>();
+            CreateMap<MapperRequest, EMLRegistration>()
+                .ForMember(d => d.PrimaryAddress, opt => opt.MapFrom(s => s));
             CreateMap<MapperRequest, MapperResponse>()
-                .ForMember(d => d.FamilyCar, opt => opt.MapFrom(s => s));
+                .ForMember(d => d.Registration, opt => opt.MapFrom(s => s));
         }
     }
 }
