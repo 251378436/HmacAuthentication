@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Server;
@@ -5,6 +6,7 @@ using Server.Auth;
 using Server.DependencyInjection;
 using Server.Middlewares;
 using Server.ModlesBinders;
+using Server.Validators;
 using System.Reflection;
 using System.Text.Json;
 
@@ -67,6 +69,7 @@ builder.Services.AddAuthentication(o =>
     .AddScheme<AuthenticationSchemeOptions, DefaultAuthHandler>("", options => { });
 
 builder.Services.AddCustomDependencyInjection();
+builder.Services.AddValidatorsFromAssemblyContaining<CarModelValidator>();
 
 var app = builder.Build();
 
