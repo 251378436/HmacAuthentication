@@ -6,6 +6,11 @@ namespace Server.Filters
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            var parameter = context.ActionArguments.FirstOrDefault().Value;
+            if (parameter == null)
+                return;
+
+
             // Do something before the action executes.
             Console.WriteLine("*****************");
             Console.WriteLine("Step 4 - 4 - 1: Action Filter 1");

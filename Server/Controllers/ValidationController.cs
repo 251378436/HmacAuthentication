@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Server.Filters;
 using Server.Models;
 
 namespace Server.Controllers
@@ -15,6 +16,7 @@ namespace Server.Controllers
         }
 
         [HttpPost]
+        [Custom1ActionFilter]
         public async Task<ActionResult<Car>> PostAsync([FromBody] Car car)
         {
             await _validator.ValidateAndThrowAsync(car);
