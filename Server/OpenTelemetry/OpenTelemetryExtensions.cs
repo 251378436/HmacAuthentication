@@ -1,4 +1,5 @@
-﻿using OpenTelemetry.Resources;
+﻿using OpenTelemetry;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace Server.OpenTelemetry
@@ -15,7 +16,8 @@ namespace Server.OpenTelemetry
             services.AddOpenTelemetryTracing(b =>
             {
                 b
-                .AddConsoleExporter()
+                //.AddConsoleExporter()
+                .AddProcessor(new SimpleActivityExportProcessor(new MyExporter()))
                 .AddSource(serviceName)
                 .SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
