@@ -6,6 +6,7 @@ using Server.Auth;
 using Server.DependencyInjection;
 using Server.Middlewares;
 using Server.ModlesBinders;
+using Server.OpenTelemetry;
 using Server.Validators;
 using System.Reflection;
 using System.Text.Json;
@@ -13,6 +14,7 @@ using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddOpenTelemetry();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers(options =>
 {
