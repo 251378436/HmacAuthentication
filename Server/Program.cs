@@ -10,10 +10,12 @@ using Server.OpenTelemetry;
 using Server.Validators;
 using System.Reflection;
 using System.Text.Json;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHealthChecks();
 builder.Services.AddOpenTelemetry();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers(options =>
@@ -84,12 +86,23 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseRequestBefore();
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHealthChecks("/health").AllowAnonymous();
+    endpoints.MapMetrics().AllowAnonymous();
+
+    EventCounterAdapter.StartListening();
+    MeterAdapter.StartListening();
+
+    endpoints.MapControllers();
+});
 
 app.UseRequestAfter();
 
