@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Models;
 using Server.Models.Client;
 using Prometheus;
+using Server.Cache;
 
 namespace Server.Controllers
 {
@@ -16,19 +17,24 @@ namespace Server.Controllers
             new CounterConfiguration { LabelNames = new[] { "outcome" } });
 
         private readonly IMapper _mapper;
-        public AutomapperController(IMapper mapper)
+        private ITokenCache _tokenCache;
+        public AutomapperController(IMapper mapper, ITokenCache tokenCache)
         {
             _mapper = mapper;
+            _tokenCache = tokenCache;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult<MapperResponse> GetResult([FromBody] MapperRequest mapperRequest)
+        public async Task<IActionResult> GetResult([FromBody] MapperRequest mapperRequest, CancellationToken cancellationToken)
         {
             var mapperResponse = _mapper.Map<MapperResponse>(mapperRequest);
 
             ControlPayCountByOutcome.WithLabels("outcome").Inc();
-            return Ok(mapperResponse);
+
+            var result = await _tokenCache.FetchToken(cancellationToken);
+            //return Ok(mapperResponse);
+            return Ok(result);
         }
 
         [HttpPost("CreateCar")]

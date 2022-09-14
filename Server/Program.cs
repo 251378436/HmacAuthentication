@@ -11,10 +11,12 @@ using Server.Validators;
 using System.Reflection;
 using System.Text.Json;
 using Prometheus;
+using Server.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMemoryCache();
 builder.Services.AddHealthChecks();
 builder.Services.AddOpenTelemetry();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -74,6 +76,8 @@ builder.Services.AddAuthentication(o =>
 
 builder.Services.AddCustomDependencyInjection();
 builder.Services.AddValidatorsFromAssemblyContaining<CarModelValidator>();
+
+builder.Services.AddSingleton<ITokenCache, TokenCache>();
 
 var app = builder.Build();
 
